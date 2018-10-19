@@ -38,7 +38,7 @@ left join sys.extended_properties f on t.id=f.major_id and f.minor_id=0
 LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
   WHERE t.XType='U'";
 
-        private static string t_sql="SELECT t.NAME Table_Name,isnull(f.value,'') Table_COMMENT FROM sys.tables AS t left join sys.extended_properties f on t.id=f.major_id and f.minor_id=0";
+        private static string t_sql="SELECT t.NAME Table_Name,isnull(f.value,'') Table_COMMENT FROM sys.tables AS t left join sys.extended_properties f on t.object_id=f.major_id and f.minor_id=0";
         public static string GenOneModel(string tablename){
             DataTable dtCol = GenDt(tablename);//获取表名 表备注 列名 备注 列数据类型 列长度 
             DataTable dtTb = GenTbDt(tablename);//获取表名 表备注 
@@ -95,12 +95,12 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
         return ret;
      }
      public static DataTable GenDt(string tablename){
-       string v_sql=sql+" where Table_Name ='"+tablename.ToUpper().Trim()+"'";
+       string v_sql=sql+" and t.name ='"+tablename.ToUpper().Trim()+"'";
        DataSet ds=MsDB.Query(v_sql);
        return ds.Tables[0];
      }
      public static DataTable GenTbDt(string tablename){
-       string v_sql=t_sql+" where Table_Name ='"+tablename.ToUpper().Trim()+"'";
+       string v_sql=t_sql+" where t.NAME ='"+tablename.ToUpper().Trim()+"'";
        DataSet ds=MsDB.Query(v_sql);
        return ds.Tables[0];
      }
