@@ -64,6 +64,9 @@ FROM
                 case "NUMBER":
                     ret = "decimal?";
                     break;
+                case "INT":
+                    ret = "decimal?";
+                    break;
                 case "TIMESTAMP":
                     ret = "DateTime?";
                     break;
