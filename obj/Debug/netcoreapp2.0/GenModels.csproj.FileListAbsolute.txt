@@ -1,0 +1,12 @@
+D:\C\github\GenModels\bin\Debug\netcoreapp2.0\GenModels.dll.config
+D:\C\github\GenModels\bin\Debug\netcoreapp2.0\GenModels.deps.json
+D:\C\github\GenModels\bin\Debug\netcoreapp2.0\GenModels.runtimeconfig.json
+D:\C\github\GenModels\bin\Debug\netcoreapp2.0\GenModels.runtimeconfig.dev.json
+D:\C\github\GenModels\bin\Debug\netcoreapp2.0\GenModels.dll
+D:\C\github\GenModels\bin\Debug\netcoreapp2.0\GenModels.pdb
+D:\C\github\GenModels\obj\Debug\netcoreapp2.0\GenModels.csprojResolveAssemblyReference.cache
+D:\C\github\GenModels\obj\Debug\netcoreapp2.0\GenModels.csproj.CoreCompileInputs.cache
+D:\C\github\GenModels\obj\Debug\netcoreapp2.0\GenModels.AssemblyInfoInputs.cache
+D:\C\github\GenModels\obj\Debug\netcoreapp2.0\GenModels.AssemblyInfo.cs
+D:\C\github\GenModels\obj\Debug\netcoreapp2.0\GenModels.dll
+D:\C\github\GenModels\obj\Debug\netcoreapp2.0\GenModels.pdb

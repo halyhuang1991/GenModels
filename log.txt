@@ -1,0 +1,4 @@
+dotnet publish -c Release --self-contained -r win-x64
+dotnet publish -r ubuntu.14.04-x64
+
+
