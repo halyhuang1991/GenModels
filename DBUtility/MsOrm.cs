@@ -6,7 +6,7 @@ namespace GenModels.DBUtility
 {
     public class MsOrm
     {
-        private string GetInsertSql<T>(T tclass)where T: class{
+        public string GetInsertSql<T>(T tclass)where T: class{
             Type t=tclass.GetType();
             string tablename=t.Name;
             StringBuilder stringBuilder=new StringBuilder();
@@ -31,7 +31,7 @@ namespace GenModels.DBUtility
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
-        private string GetUpdSql<T>(T tclass,string keys)where T: class{
+        public string GetUpdSql<T>(T tclass,string keys)where T: class{
             Type t=tclass.GetType();
             string tablename=t.Name;
             StringBuilder stringBuilder = new StringBuilder();
@@ -41,24 +41,29 @@ namespace GenModels.DBUtility
             List<string> ls = new List<string>();
             foreach (var p in t.GetProperties())
             {
-                 var type=p.PropertyType.FullName.ToString().ToLower();
-                       var val=p.GetValue(tclass,null).ToString().Replace("'","''");
-                       if(type.Contains("decimal")){
-                           list.Add(p.Name+"="+val);
-                            if(arrKeys.Contains<string>(p.Name)){
-                                ls.Add(p.Name+"="+val);
-                            }
-                       }else{
-                            list.Add(p.Name+"='"+val+"'");
-                            if(arrKeys.Contains<string>(p.Name)){
-                                ls.Add(p.Name+"='"+val+"'");
-                            }
-                       }
+                var type = p.PropertyType.FullName.ToString().ToLower();
+                var val = p.GetValue(tclass, null).ToString().Replace("'", "''");
+                if (type.Contains("decimal"))
+                {
+                    list.Add(p.Name + "=" + val);
+                    if (arrKeys.Contains<string>(p.Name))
+                    {
+                        ls.Add(p.Name + "=" + val);
+                    }
+                }
+                else
+                {
+                    list.Add(p.Name + "='" + val + "'");
+                    if (arrKeys.Contains<string>(p.Name))
+                    {
+                        ls.Add(p.Name + "='" + val + "'");
+                    }
+                }
             }
             string tmp1=String.Join(",",list);
             string tmp2=String.Join(",",ls);
             stringBuilder.Append(tmp1+" where "+tmp2);
-             string v_sql=stringBuilder.ToString();
+            string v_sql=stringBuilder.ToString();
             return v_sql;
         }
         public bool Insert<T>(T tclass)where T: class{
