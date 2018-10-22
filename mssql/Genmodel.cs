@@ -1,4 +1,5 @@
 using System.Data;
+using System.IO;
 using System.Text;
 using GenModels.DBUtility;
 
@@ -54,7 +55,7 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
             {
                 string column_name = dr["column_name"].ToString().Trim();
                 string DATA_TYPE = dr["DATA_TYPE"].ToString();
-                ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower());
+                ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
                 ret2.AppendLine("   get { return _" + column_name.ToLower() + "; }");
@@ -103,6 +104,11 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
        string v_sql=t_sql+" where t.NAME ='"+tablename.ToUpper().Trim()+"'";
        DataSet ds=MsDB.Query(v_sql);
        return ds.Tables[0];
+     }
+     public static void WriteFile(string tablename){
+          tablename=tablename.ToUpper().Trim();
+          string ret=GenOneModel(tablename);
+          File.AppendAllText(@"D:\C\github\GenModels\Models\"+tablename+".cs",ret);
      }
 
         

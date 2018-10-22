@@ -42,7 +42,7 @@ FROM
             {
                 string column_name = dr["column_name"].ToString().Trim();
                 string DATA_TYPE = dr["DATA_TYPE"].ToString();
-                ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower());
+                ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
                 ret2.AppendLine("   get { return _" + column_name.ToLower() + "; }");
