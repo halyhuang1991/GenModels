@@ -66,6 +66,26 @@ namespace GenModels.DBUtility
                 return ds;
             }
         }
+         public static int ExecuteSql(string SQLString)
+        {
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(SQLString, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        return rows;
+                    }
+                    catch (MySqlException E)
+                    {
+                        connection.Close();
+                        throw new Exception(E.Message);
+                    }
+                }
+            }
+        }
         public static List<MySqlParameter> ExecuteSql(string cmdText, CommandType cmdType, params MySqlParameter[] cmdParms)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))

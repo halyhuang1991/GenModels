@@ -56,6 +56,26 @@ namespace GenModels.DBUtility
                 return ds;
             }
         }
+        public static int ExecuteSql(string SQLString)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(SQLString, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        return rows;
+                    }
+                    catch (SqlException E)
+                    {
+                        connection.Close();
+                        throw new Exception(E.Message);
+                    }
+                }
+            }
+        }
         public static List<SqlParameter> ExecuteSql(string cmdText, CommandType cmdType, params SqlParameter[] cmdParms)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))

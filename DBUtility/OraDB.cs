@@ -55,6 +55,26 @@ namespace GenModels.DBUtility
                 return ds;
             }
         }
+         public static int ExecuteSql(string SQLString)
+        {
+            using (OracleConnection connection = new OracleConnection(connectionString))
+            {
+                using (OracleCommand cmd = new OracleCommand(SQLString, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        int rows = cmd.ExecuteNonQuery();
+                        return rows;
+                    }
+                    catch (OracleException E)
+                    {
+                        connection.Close();
+                        throw new Exception(E.Message);
+                    }
+                }
+            }
+        }
         public static List<OracleParameter> ExecuteSql(string cmdText, CommandType cmdType, params OracleParameter[] cmdParms)
         {
             using (OracleConnection connection = new OracleConnection(connectionString))
