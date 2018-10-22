@@ -10,7 +10,10 @@ namespace GenModels.DBUtility
         static MsOrm _new;
         public static MsOrm New{
             get{
-                return new MsOrm();
+                if(_new==null){
+                    _new=new MsOrm();
+                }
+                return _new;
             }
         }
         public string GetInsertSql<T>(T tclass)where T: class{
