@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Collections;
-
 namespace GenModels.DBUtility
 {
     public class MsOrm
     {
+        static MsOrm _new;
+        public static MsOrm New{
+            get{
+                return new MsOrm();
+            }
+        }
         public string GetInsertSql<T>(T tclass)where T: class{
             Type t=tclass.GetType();
             string tablename=t.Name;
@@ -19,10 +24,12 @@ namespace GenModels.DBUtility
             {
                        list.Add(p.Name);
                        var type=p.PropertyType.FullName.ToString().ToLower();
-                       var val=p.GetValue(tclass,null).ToString().Replace("'","''");
+                       var value=p.GetValue(tclass,null);
                        if(type.Contains("decimal")){
+                           var val=value==null?"null":value.ToString();
                            ls.Add(val);
                        }else{
+                           var val=value==null?"":value.ToString().Replace("'","''");
                            ls.Add("'"+val+"'");
                        }
             }
@@ -44,9 +51,11 @@ namespace GenModels.DBUtility
             foreach (var p in t.GetProperties())
             {
                 var type = p.PropertyType.FullName.ToString().ToLower();
-                var val = p.GetValue(tclass, null).ToString().Replace("'", "''");
+                var value=p.GetValue(tclass, null);
+               
                 if (type.Contains("decimal"))
                 {
+                    var val = value==null?"null":value.ToString();
                     list.Add(p.Name + "=" + val);
                     if (arrKeys.Contains<string>(p.Name))
                     {
@@ -55,6 +64,7 @@ namespace GenModels.DBUtility
                 }
                 else
                 {
+                    var val = value==null?"":value.ToString().Replace("'", "''");
                     list.Add(p.Name + "='" + val + "'");
                     if (arrKeys.Contains<string>(p.Name))
                     {
@@ -78,11 +88,8 @@ namespace GenModels.DBUtility
             stringBuilder.AppendLine("BEGIN ");
             string v_sql="";
             foreach(var tclass in aList){
-                if(tclass.GetType().isClass){
                   v_sql=GetInsertSql(tclass);
                   stringBuilder.AppendLine(v_sql+";");
-                }
-                
             }
             stringBuilder.AppendLine("END");
             v_sql=stringBuilder.ToString();
@@ -99,11 +106,8 @@ namespace GenModels.DBUtility
             stringBuilder.AppendLine("BEGIN ");
             string v_sql="";
             foreach(var item in dicClass){
-                if(item.Key.GetType().isClass){
                   v_sql=GetUpdSql(item.Key,item.Value);
                   stringBuilder.AppendLine(v_sql+";");
-                }
-                
             }
             stringBuilder.AppendLine("END");
             v_sql=stringBuilder.ToString();
