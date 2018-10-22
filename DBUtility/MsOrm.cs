@@ -94,5 +94,21 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
+        public bool Update(Dictionary<dynamic, string> dicClass){
+            StringBuilder stringBuilder=new StringBuilder();
+            stringBuilder.AppendLine("BEGIN ");
+            string v_sql="";
+            foreach(var item in dicClass){
+                if(item.Key.GetType().isClass){
+                  v_sql=GetUpdSql(item.Key,item.Value);
+                  stringBuilder.AppendLine(v_sql+";");
+                }
+                
+            }
+            stringBuilder.AppendLine("END");
+            v_sql=stringBuilder.ToString();
+            int ret=MsDB.ExecuteSql(v_sql);
+            return true;
+        }
     }
 }
