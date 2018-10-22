@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Collections;
+
 namespace GenModels.DBUtility
 {
     public class MsOrm
@@ -71,6 +73,22 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
+         public bool Insert(List<dynamic> aList){
+            StringBuilder stringBuilder=new StringBuilder();
+            stringBuilder.AppendLine("BEGIN ");
+            string v_sql="";
+            foreach(var tclass in aList){
+                if(tclass.GetType().isClass){
+                  v_sql=GetInsertSql(tclass);
+                  stringBuilder.AppendLine(v_sql+";");
+                }
+                
+            }
+            stringBuilder.AppendLine("END");
+            v_sql=stringBuilder.ToString();
+            int ret=MsDB.ExecuteSql(v_sql);
+            return true;
+         }
         public bool Update<T>(T tclass,string keys)where T: class{
             string v_sql=GetUpdSql<T>(tclass,keys);
             int ret=MsDB.ExecuteSql(v_sql);
