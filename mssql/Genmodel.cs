@@ -55,6 +55,7 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
             {
                 string column_name = dr["column_name"].ToString().Trim();
                 string DATA_TYPE = dr["DATA_TYPE"].ToString();
+                if(DATA_TYPE=="")continue;
                 ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
@@ -84,7 +85,7 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
                     ret = "decimal?";
                     break;
                 case "DATESTAMP":
-                    ret = "DateTime?";
+                    ret = "";
                     break;
                 case "DATE":
                     ret = "DateTime?";
