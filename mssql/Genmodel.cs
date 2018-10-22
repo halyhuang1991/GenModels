@@ -90,6 +90,9 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
                 case "DATE":
                     ret = "DateTime?";
                     break;
+                 case "DATETIME":
+                    ret = "DateTime?";
+                    break;
                 default:
                     ret = "string";
                     break;
