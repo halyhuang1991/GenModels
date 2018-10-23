@@ -81,12 +81,41 @@ namespace GenModels.DBUtility
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
+        public string GetDelSql<T>(T tclass,string keys)where T: class{
+             Type t=tclass.GetType();
+            string tablename=t.Name;
+            StringBuilder stringBuilder = new StringBuilder();
+            string[] arrKeys=keys.ToUpper().Split(',');
+            stringBuilder.Append("DELETE FROM " + tablename + " WHERE ");
+            List<string> list = new List<string>();
+            foreach (var p in t.GetProperties())
+            {
+                var type = p.PropertyType.FullName.ToString().ToLower();
+                var value=p.GetValue(tclass, null);
+                string val;
+                if (type.Contains("decimal"))
+                {
+                    val = value == null ? "null" : value.ToString();
+                    if (arrKeys.Contains<string>(p.Name))list.Add(p.Name + "=" + val);
+                }
+                else
+                {
+                    val = value == null ? "" : value.ToString().Replace("'", "''");
+                     if (arrKeys.Contains<string>(p.Name)) list.Add(p.Name + "='" + val + "'");
+                }
+                
+            }
+            string tmp1=String.Join(",",list);
+             stringBuilder.Append(tmp1);
+            string v_sql=stringBuilder.ToString();
+            return v_sql;
+        }
         public bool Insert<T>(T tclass)where T: class{
             string v_sql=GetInsertSql<T>(tclass);
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
-         public bool Insert(List<dynamic> aList){
+        public bool Insert(List<dynamic> aList){
             StringBuilder stringBuilder=new StringBuilder();
             stringBuilder.AppendLine("BEGIN ");
             string v_sql="";
@@ -117,5 +146,24 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
+        public bool Delete<T>(T tclass,string keys)where T: class{
+            string v_sql=GetDelSql<T>(tclass,keys);
+            int ret=MsDB.ExecuteSql(v_sql);
+            return true;
+        }
+        public bool Delete(Dictionary<dynamic, string> dicClass){
+            StringBuilder stringBuilder=new StringBuilder();
+            stringBuilder.AppendLine("BEGIN ");
+            string v_sql="";
+            foreach(var item in dicClass){
+                  v_sql=GetDelSql(item.Key,item.Value);
+                  stringBuilder.AppendLine(v_sql+";");
+            }
+            stringBuilder.AppendLine("END");
+            v_sql=stringBuilder.ToString();
+            int ret=MsDB.ExecuteSql(v_sql);
+            return true;
+        }
+
     }
 }
