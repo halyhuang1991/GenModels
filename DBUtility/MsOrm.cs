@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Collections;
+using System.Reflection;
+
 namespace GenModels.DBUtility
 {
     public class MsOrm
@@ -14,6 +16,14 @@ namespace GenModels.DBUtility
                     _new=new MsOrm();
                 }
                 return _new;
+            }
+        }
+        private bool HasAttibute(PropertyInfo p,string attibute){
+            Attribute[] ab=Attribute.GetCustomAttributes(p);
+            if(ab.Length>0){
+                return true;
+            }else{
+                return false;
             }
         }
         public string GetInsertSql<T>(T tclass)where T: class{
@@ -43,7 +53,7 @@ namespace GenModels.DBUtility
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
-        public string GetUpdSql<T>(T tclass,string keys)where T: class{
+        public string GetUpdSql<T>(T tclass,string keys="")where T: class{
             Type t=tclass.GetType();
             string tablename=t.Name;
             StringBuilder stringBuilder = new StringBuilder();
@@ -60,28 +70,46 @@ namespace GenModels.DBUtility
                 {
                     var val = value==null?"null":value.ToString();
                     list.Add(p.Name + "=" + val);
-                    if (arrKeys.Contains<string>(p.Name))
+                    if (keys != "")
                     {
-                        ls.Add(p.Name + "=" + val);
+                        if (arrKeys.Contains<string>(p.Name))
+                        {
+                            ls.Add(p.Name + "=" + val);
+                        }
+                    }else{
+                        if(HasAttibute(p,"Key")){
+                            ls.Add(p.Name + "=" + val);
+                        }
                     }
+                    
                 }
                 else
                 {
                     var val = value==null?"":value.ToString().Replace("'", "''");
                     list.Add(p.Name + "='" + val + "'");
-                    if (arrKeys.Contains<string>(p.Name))
+                    if (keys != "")
                     {
-                        ls.Add(p.Name + "='" + val + "'");
+                        if (arrKeys.Contains<string>(p.Name))
+                        {
+                            ls.Add(p.Name + "='" + val + "'");
+                        }
+                    }else{
+                           if(HasAttibute(p,"Key")){
+                                ls.Add(p.Name + "='" + val + "'");
+                           }
                     }
+                    
                 }
             }
+            if(list.Count==0)throw new Exception("null sets!");
+             if(ls.Count==0)throw new Exception("null keys!");
             string tmp1=String.Join(",",list);
             string tmp2=String.Join(",",ls);
             stringBuilder.Append(tmp1+" where "+tmp2);
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
-        public string GetDelSql<T>(T tclass,string keys)where T: class{
+        public string GetDelSql<T>(T tclass,string keys="")where T: class{
              Type t=tclass.GetType();
             string tablename=t.Name;
             StringBuilder stringBuilder = new StringBuilder();
@@ -91,22 +119,44 @@ namespace GenModels.DBUtility
             foreach (var p in t.GetProperties())
             {
                 var type = p.PropertyType.FullName.ToString().ToLower();
-                var value=p.GetValue(tclass, null);
+                var value = p.GetValue(tclass, null);
                 string val;
                 if (type.Contains("decimal"))
                 {
                     val = value == null ? "null" : value.ToString();
-                    if (arrKeys.Contains<string>(p.Name))list.Add(p.Name + "=" + val);
+                    if (keys != "")
+                    {
+                        if (arrKeys.Contains<string>(p.Name)) list.Add(p.Name + "=" + val);
+                    }
+                    else
+                    {
+                        if (HasAttibute(p, "Key"))
+                        {
+                            list.Add(p.Name + "=" + val);
+                        }
+                    }
+
                 }
                 else
                 {
                     val = value == null ? "" : value.ToString().Replace("'", "''");
-                     if (arrKeys.Contains<string>(p.Name)) list.Add(p.Name + "='" + val + "'");
+                    if (keys != "")
+                    {
+                        if (arrKeys.Contains<string>(p.Name)) list.Add(p.Name + "='" + val + "'");
+                    }
+                    else
+                    {
+                        if (HasAttibute(p, "Key"))
+                        {
+                            list.Add(p.Name + "='" + val + "'");
+                        }
+                    }
                 }
-                
+
             }
+            if(list.Count==0)throw new Exception("null keys!");
             string tmp1=String.Join(",",list);
-             stringBuilder.Append(tmp1);
+            stringBuilder.Append(tmp1);
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
@@ -128,7 +178,7 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
          }
-        public bool Update<T>(T tclass,string keys)where T: class{
+        public bool Update<T>(T tclass,string keys="")where T: class{
             string v_sql=GetUpdSql<T>(tclass,keys);
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
@@ -146,7 +196,7 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
-        public bool Delete<T>(T tclass,string keys)where T: class{
+        public bool Delete<T>(T tclass,string keys="")where T: class{
             string v_sql=GetDelSql<T>(tclass,keys);
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
