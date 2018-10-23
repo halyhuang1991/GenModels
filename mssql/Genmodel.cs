@@ -56,7 +56,9 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
                 string column_name = dr["column_name"].ToString().Trim();
                 string DATA_TYPE = dr["DATA_TYPE"].ToString();
                 if(DATA_TYPE=="")continue;
+                string IsKey = dr["iskey"].ToString();
                 ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
+                if(IsKey=="1") ret2.AppendLine("[Key]");
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
                 ret2.AppendLine("   get { return _" + column_name.ToLower() + "; }");
