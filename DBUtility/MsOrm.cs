@@ -214,6 +214,23 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
+        public bool AddOrUpd(Dictionary<dynamic, string> dicClass){
+            StringBuilder stringBuilder=new StringBuilder();
+            stringBuilder.AppendLine("BEGIN ");
+            string v_sql="";
+            foreach (var item in dicClass)
+            {
+                v_sql = GetDelSql(item.Key, item.Value);
+                stringBuilder.AppendLine(v_sql + ";");
+                stringBuilder.AppendLine("IF @@ROWCOUNT = 0");
+                v_sql = GetInsertSql(item.Key);
+                stringBuilder.AppendLine(v_sql + ";");
+            }
+            stringBuilder.AppendLine("END");
+            v_sql=stringBuilder.ToString();
+            int ret=MsDB.ExecuteSql(v_sql);
+            return true;
+        }
 
     }
 }
