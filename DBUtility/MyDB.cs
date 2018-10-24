@@ -146,6 +146,8 @@ namespace GenModels.DBUtility
                     MySqlCommand cmd = new MySqlCommand();
                     try
                     {
+                        cmd.Transaction =trans;
+                        cmd.Connection=conn;
                         //循环
                         foreach (DictionaryEntry myDE in SQLStringList)
                         {

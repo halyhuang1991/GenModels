@@ -165,6 +165,8 @@ namespace GenModels.DBUtility
                     SqlCommand cmd = new SqlCommand();
                     try
                     {
+                        cmd.Transaction =trans;
+                        cmd.Connection=conn;
                         //循环
                         foreach (string sql in SQLStringList)
                         {
