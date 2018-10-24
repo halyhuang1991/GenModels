@@ -58,7 +58,7 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
                 if(DATA_TYPE=="")continue;
                 string IsKey = dr["iskey"].ToString();
                 ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
-                if(IsKey=="1") ret2.AppendLine("[Key]");
+                if(IsKey=="1") ret2.AppendLine("    [Key]");
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
                 ret2.AppendLine("   get { return _" + column_name.ToLower() + "; }");
@@ -114,7 +114,11 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
      public static void WriteFile(string tablename){
           tablename=tablename.ToUpper().Trim();
           string ret=GenOneModel(tablename);
-          File.AppendAllText(@"D:\C\github\GenModels\Models\"+tablename+".cs",ret);
+          string path=@"D:\C\github\GenModels\Models\"+tablename+".cs";
+          if(File.Exists(path)){
+            File.Delete(path);
+          }
+          File.AppendAllText(path,ret);
      }
 
         

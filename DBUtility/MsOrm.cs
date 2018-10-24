@@ -7,6 +7,7 @@ using System.Reflection;
 
 namespace GenModels.DBUtility
 {
+    //单例 贪婪 模式
     public class MsOrm
     {
         static MsOrm _new;
@@ -232,5 +233,62 @@ namespace GenModels.DBUtility
             return true;
         }
 
+    }
+    //外观类模式+观察者               myorm,msorm,oraorm 如果继承同样接口 这个可改成策略模式
+    public class MsSqlTran{
+        private MsOrm orm;
+        List<string> SQLStringList;
+        public MsSqlTran()
+        {
+            orm = MsOrm.New;
+            SQLStringList = new List<string>();
+        }
+        public void Insert<T>(T tclass) where T : class
+        {
+            string v_sql = orm.GetInsertSql<T>(tclass);
+            SQLStringList.Add(v_sql);
+        }
+        public void Insert(List<dynamic> aList)
+        {
+            foreach (var tclass in aList)
+            {
+                string v_sql = orm.GetInsertSql(tclass);
+                SQLStringList.Add(v_sql);
+            }
+        }
+        public void Update<T>(T tclass, string keys = "") where T : class
+        {
+            string v_sql = orm.GetUpdSql<T>(tclass, keys);
+            SQLStringList.Add(v_sql);
+        }
+        public void Update(Dictionary<dynamic, string> dicClass)
+        {
+            string v_sql = "";
+            foreach (var item in dicClass)
+            {
+                v_sql = orm.GetUpdSql(item.Key, item.Value);
+                SQLStringList.Add(v_sql);
+            }
+
+        }
+        public void Delete<T>(T tclass, string keys = "") where T : class
+        {
+            string v_sql = orm.GetDelSql<T>(tclass, keys);
+            SQLStringList.Add(v_sql);
+        }
+        public void Delete(Dictionary<dynamic, string> dicClass)
+        {
+            string v_sql = "";
+            foreach (var item in dicClass)
+            {
+                v_sql = orm.GetDelSql(item.Key, item.Value);
+                SQLStringList.Add(v_sql);
+            }
+        }
+        public void Submit()
+        {
+            if (this.SQLStringList.Count == 0) return;
+            MsDB.ExecuteSqlTran(this.SQLStringList);
+        }
     }
 }

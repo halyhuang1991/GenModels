@@ -144,9 +144,35 @@ namespace GenModels.DBUtility
                             PrepareCommand(cmd, conn, trans, cmdText, cmdParms);
                             int val = cmd.ExecuteNonQuery();
                             cmd.Parameters.Clear();
-
-                            trans.Commit();
                         }
+                         trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        public static void ExecuteSqlTran(List<string> SQLStringList)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+                    SqlCommand cmd = new SqlCommand();
+                    try
+                    {
+                        //循环
+                        foreach (string sql in SQLStringList)
+                        {
+                            string cmdText = sql;
+                            cmd.CommandText=cmdText;
+                            int val = cmd.ExecuteNonQuery();
+                        }
+                         trans.Commit();
                     }
                     catch
                     {

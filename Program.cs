@@ -10,6 +10,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
+            //GenModels.mssql.Genmodel.WriteFile("book");
             Console.WriteLine("Hello World!");
         }
     }

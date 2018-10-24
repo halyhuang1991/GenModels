@@ -1,19 +1,17 @@
-using System;
-namespace Models
-{
-    [Serializable]
-    public partial class BOOK
-    {
+using System; 
+namespace Models {
+ [Serializable] 
+  public partial class BOOK {
         private decimal? _id;
         private string _name;
         private decimal? _booknum;
+
         [Key]
         public decimal? ID
         {
             set { _id = value; }
             get { return _id; }
         }
-
         public string NAME
         {
             set { _name = value; }
@@ -25,5 +23,5 @@ namespace Models
             get { return _booknum; }
         }
 
-    }
+   }
 }
