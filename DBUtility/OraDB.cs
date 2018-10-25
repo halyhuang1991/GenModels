@@ -6,7 +6,19 @@ using Oracle.ManagedDataAccess.Client;
 using System.Collections;
 namespace GenModels.DBUtility
 {
-    public class OraDB
+     public interface IDb{
+       
+     }
+     public class DbClass{
+       public static int ExecuteSql(string SQLString){
+           Console.WriteLine("error!");
+           return 1;
+       }
+       public int Execute(string SQLString){
+            return DbClass.ExecuteSql(SQLString);
+       }
+     }
+    public class OraDB:DbClass
     {
         private static string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
        
@@ -55,7 +67,7 @@ namespace GenModels.DBUtility
                 return ds;
             }
         }
-         public static int ExecuteSql(string SQLString)
+         public new static int ExecuteSql(string SQLString)
         {
             using (OracleConnection connection = new OracleConnection(connectionString))
             {

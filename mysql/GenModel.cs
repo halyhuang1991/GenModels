@@ -1,4 +1,5 @@
 using System.Data;
+using System.IO;
 using System.Text;
 using GenModels.DBUtility;
 
@@ -21,7 +22,7 @@ namespace GenModels.mysql
   c.character_maximum_length data_length,
   c.numeric_precision data_precision,
   c.numeric_scale Data_Scale,
-  c.column_key iskey
+  IF(c.column_key='',0,1) iskey
 FROM
   INFORMATION_SCHEMA.COLUMNS c
   left join INFORMATION_SCHEMA.TABLES t on c.TABLE_CATALOG=t.TABLE_NAME
@@ -43,6 +44,8 @@ FROM
                 string column_name = dr["column_name"].ToString().Trim();
                 string DATA_TYPE = dr["DATA_TYPE"].ToString();
                 ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
+                string IsKey = dr["iskey"].ToString();
+                if(IsKey=="1") ret2.AppendLine("    [Key]");
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
                 ret2.AppendLine("   get { return _" + column_name.ToLower() + "; }");
@@ -56,7 +59,7 @@ FROM
      }
      private static string GetType(string DATA_TYPE){
             string ret;
-            switch (DATA_TYPE)
+            switch (DATA_TYPE.ToUpper())
             {
                 case "VARCHAR2":
                     ret = "string";
@@ -88,6 +91,15 @@ FROM
        string v_sql=t_sql+" and t.Table_Name ='"+tablename.ToUpper().Trim()+"'";
        DataSet ds=MyDB.Query(v_sql);
        return ds.Tables[0];
+     }
+     public static void WriteFile(string tablename){
+          tablename=tablename.ToUpper().Trim();
+          string ret=GenOneModel(tablename);
+          string path=@"D:\C\github\GenModels\Models\"+tablename+".cs";
+          if(File.Exists(path)){
+            File.Delete(path);
+          }
+          File.AppendAllText(path,ret);
      }
     }
 }

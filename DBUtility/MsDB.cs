@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace GenModels.DBUtility
 {
-    public class MsDB
+    public class MsDB:DbClass
     {
          private static string connectionString = ConfigurationManager.AppSettings["MsConnectionString"];
        
@@ -56,7 +56,7 @@ namespace GenModels.DBUtility
                 return ds;
             }
         }
-        public static int ExecuteSql(string SQLString)
+        public new static int ExecuteSql(string SQLString)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {

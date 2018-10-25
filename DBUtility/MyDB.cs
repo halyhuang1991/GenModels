@@ -8,7 +8,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 namespace GenModels.DBUtility
 {
-    public class MyDB
+    public class MyDB:DbClass
     {
         private static string connectionString = ConfigurationManager.AppSettings["MyConnectionString"];
        
@@ -66,7 +66,7 @@ namespace GenModels.DBUtility
                 return ds;
             }
         }
-         public static int ExecuteSql(string SQLString)
+         public new static int ExecuteSql(string SQLString)
         {
             using (MySqlConnection connection = new MySqlConnection(connectionString))
             {
@@ -177,6 +177,8 @@ namespace GenModels.DBUtility
                     MySqlCommand cmd = new MySqlCommand();
                     try
                     {
+                        cmd.Transaction =trans;
+                        cmd.Connection=conn;
                         //循环
                         foreach (string sql in SQLStringList)
                         {

@@ -1,25 +1,39 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
-using System.Collections;
 using System.Reflection;
+using System.Text;
 
-namespace GenModels.DBUtility
+namespace GenModels.DBUtility.ORM
 {
-    //单例 贪婪 模式
-    public class MsOrm
+    public interface IOrm
     {
-        static MsOrm _new;
-        public static MsOrm New{
+        bool HasAttibute(PropertyInfo p,string attibute);
+        string GetInsertSql<T>(T tclass)where T: class;
+        string GetUpdSql<T>(T tclass,string keys="",string updCols="")where T: class;
+        string GetDelSql<T>(T tclass,string keys="")where T: class;
+        bool Insert<T>(T tclass)where T: class;
+        bool Insert(List<dynamic> aList);
+        bool Update<T>(T tclass,string keys="",string updCols="")where T: class;
+        bool Update(Dictionary<dynamic, string> dicClass);
+        bool Delete<T>(T tclass,string keys="")where T: class;
+        bool Delete(Dictionary<dynamic, string> dicClass);
+        bool AddOrUpd(Dictionary<dynamic, string> dicClass);
+
+    } 
+    public class OrmClass:IOrm  {
+        static OrmClass _new;
+        public DbClass Db;
+        public static OrmClass New{
             get{
                 if(_new==null){
-                    _new=new MsOrm();
+                    _new=new OrmClass();
                 }
                 return _new;
             }
         }
-        private bool HasAttibute(PropertyInfo p,string attibute){
+       
+        public bool HasAttibute(PropertyInfo p,string attibute){
             Attribute[] ab=Attribute.GetCustomAttributes(p);
             if(ab.Length>0){
                 return true;
@@ -27,7 +41,7 @@ namespace GenModels.DBUtility
                 return false;
             }
         }
-        public string GetInsertSql<T>(T tclass)where T: class{
+        public virtual string GetInsertSql<T>(T tclass)where T: class{
             Type t=tclass.GetType();
             string tablename=t.Name;
             StringBuilder stringBuilder=new StringBuilder();
@@ -54,7 +68,7 @@ namespace GenModels.DBUtility
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
-        public string GetUpdSql<T>(T tclass,string keys="")where T: class{
+        public virtual string GetUpdSql<T>(T tclass,string keys="",string updCols="")where T: class{
             Type t=tclass.GetType();
             string tablename=t.Name;
             StringBuilder stringBuilder = new StringBuilder();
@@ -69,8 +83,21 @@ namespace GenModels.DBUtility
                
                 if (type.Contains("decimal"))
                 {
-                    var val = value==null?"null":value.ToString();
-                    list.Add(p.Name + "=" + val);
+                    var val = value == null ? "null" : value.ToString();
+                    if (updCols != "")
+                    {
+                        if (updCols.Split(',').Contains<string>(p.Name))
+                        {
+                            list.Add(p.Name + "=" + val);
+                        }
+                    }
+                    else
+                    {
+                        list.Add(p.Name + "=" + val);
+
+                    }
+                   
+                    
                     if (keys != "")
                     {
                         if (arrKeys.Contains<string>(p.Name))
@@ -87,7 +114,19 @@ namespace GenModels.DBUtility
                 else
                 {
                     var val = value==null?"":value.ToString().Replace("'", "''");
-                    list.Add(p.Name + "='" + val + "'");
+                     if (updCols != "")
+                    {
+                        if (updCols.Split(',').Contains<string>(p.Name))
+                        {
+                            list.Add(p.Name + "='" + val + "'");
+                        }
+                    }
+                    else
+                    {
+                        list.Add(p.Name + "='" + val + "'");
+
+                    }
+                   
                     if (keys != "")
                     {
                         if (arrKeys.Contains<string>(p.Name))
@@ -110,7 +149,7 @@ namespace GenModels.DBUtility
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
-        public string GetDelSql<T>(T tclass,string keys="")where T: class{
+        public virtual string GetDelSql<T>(T tclass,string keys="")where T: class{
              Type t=tclass.GetType();
             string tablename=t.Name;
             StringBuilder stringBuilder = new StringBuilder();
@@ -161,12 +200,12 @@ namespace GenModels.DBUtility
             string v_sql=stringBuilder.ToString();
             return v_sql;
         }
-        public bool Insert<T>(T tclass)where T: class{
+        public virtual bool Insert<T>(T tclass)where T: class{
             string v_sql=GetInsertSql<T>(tclass);
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
-        public bool Insert(List<dynamic> aList){
+        public virtual bool Insert(List<dynamic> aList){
             StringBuilder stringBuilder=new StringBuilder();
             stringBuilder.AppendLine("BEGIN ");
             string v_sql="";
@@ -179,12 +218,12 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
          }
-        public bool Update<T>(T tclass,string keys="")where T: class{
-            string v_sql=GetUpdSql<T>(tclass,keys);
+        public virtual bool Update<T>(T tclass,string keys="",string updCols="")where T: class{
+            string v_sql=GetUpdSql<T>(tclass,keys,updCols);
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
-        public bool Update(Dictionary<dynamic, string> dicClass){
+        public virtual bool Update(Dictionary<dynamic, string> dicClass){
             StringBuilder stringBuilder=new StringBuilder();
             stringBuilder.AppendLine("BEGIN ");
             string v_sql="";
@@ -197,12 +236,12 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
-        public bool Delete<T>(T tclass,string keys="")where T: class{
+        public virtual bool Delete<T>(T tclass,string keys="")where T: class{
             string v_sql=GetDelSql<T>(tclass,keys);
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
-        public bool Delete(Dictionary<dynamic, string> dicClass){
+        public virtual bool Delete(Dictionary<dynamic, string> dicClass){
             StringBuilder stringBuilder=new StringBuilder();
             stringBuilder.AppendLine("BEGIN ");
             string v_sql="";
@@ -215,7 +254,7 @@ namespace GenModels.DBUtility
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
         }
-        public bool AddOrUpd(Dictionary<dynamic, string> dicClass){
+        public virtual bool AddOrUpd(Dictionary<dynamic, string> dicClass){
             StringBuilder stringBuilder=new StringBuilder();
             stringBuilder.AppendLine("BEGIN ");
             string v_sql="";
@@ -231,64 +270,6 @@ namespace GenModels.DBUtility
             v_sql=stringBuilder.ToString();
             int ret=MsDB.ExecuteSql(v_sql);
             return true;
-        }
-
-    }
-    //外观类模式+观察者               myorm,msorm,oraorm 如果继承同样接口 这个可改成策略模式
-    public class MsSqlTran{
-        private MsOrm orm;
-        List<string> SQLStringList;
-        public MsSqlTran()
-        {
-            orm = MsOrm.New;
-            SQLStringList = new List<string>();
-        }
-        public void Insert<T>(T tclass) where T : class
-        {
-            string v_sql = orm.GetInsertSql<T>(tclass);
-            SQLStringList.Add(v_sql);
-        }
-        public void Insert(List<dynamic> aList)
-        {
-            foreach (var tclass in aList)
-            {
-                string v_sql = orm.GetInsertSql(tclass);
-                SQLStringList.Add(v_sql);
-            }
-        }
-        public void Update<T>(T tclass, string keys = "") where T : class
-        {
-            string v_sql = orm.GetUpdSql<T>(tclass, keys);
-            SQLStringList.Add(v_sql);
-        }
-        public void Update(Dictionary<dynamic, string> dicClass)
-        {
-            string v_sql = "";
-            foreach (var item in dicClass)
-            {
-                v_sql = orm.GetUpdSql(item.Key, item.Value);
-                SQLStringList.Add(v_sql);
-            }
-
-        }
-        public void Delete<T>(T tclass, string keys = "") where T : class
-        {
-            string v_sql = orm.GetDelSql<T>(tclass, keys);
-            SQLStringList.Add(v_sql);
-        }
-        public void Delete(Dictionary<dynamic, string> dicClass)
-        {
-            string v_sql = "";
-            foreach (var item in dicClass)
-            {
-                v_sql = orm.GetDelSql(item.Key, item.Value);
-                SQLStringList.Add(v_sql);
-            }
-        }
-        public void Submit()
-        {
-            if (this.SQLStringList.Count == 0) return;
-            MsDB.ExecuteSqlTran(this.SQLStringList);
         }
     }
 }
