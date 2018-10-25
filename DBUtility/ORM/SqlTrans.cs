@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace GenModels.DBUtility.ORM
@@ -72,7 +73,8 @@ namespace GenModels.DBUtility.ORM
                     MsDB.ExecuteSqlTran(this.SQLStringList);
                     break;
                 default:
-                    break;
+                    throw new Exception("null!");
+                    //break;
             }
             
         }
