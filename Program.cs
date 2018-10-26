@@ -3,6 +3,7 @@ using System.Data;
 using GenModels.DBUtility;
 using System.IO;
 using System.Collections.Generic;
+using GenModels.DBUtility.ORM;
 
 namespace GenModels
 {
@@ -10,7 +11,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
-          
+            
             Console.WriteLine("Hello World!");
         }
         private static void WriteModel(){
@@ -49,6 +50,9 @@ namespace GenModels
             SCORE1.NAME = "232";
             tran1.Insert<Models.SCORE>(SCORE1);
             tran1.Submit();
+            //----------------------------------------
+            OrmClass orm=new OrmClass();
+            string ret=orm.GetPageSql("id", "id,name", 1, 10, " id >0", "book");
 
         }
     }

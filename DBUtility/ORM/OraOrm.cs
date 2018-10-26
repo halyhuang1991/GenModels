@@ -15,6 +15,27 @@ namespace GenModels.DBUtility.ORM
                 return _new;
             }
         }
+        public override string GetPageSql(string OrderFilds, string tbFields, int PageIndex, int PageSize, string strWhere, string tbName)
+        {
+            string v_sql = "select * from (select  rownum as rownumber," + tbFields;
+            if (tbName.ToLower().Contains("select"))
+            {
+                v_sql += " from (" + tbName + ")";
+            }
+            else
+            {
+                v_sql += " from " + tbName;
+
+            }
+           
+            if (strWhere.Trim() != "")
+            {
+                v_sql += " where " + strWhere;
+            }
+             v_sql +=OrderFilds==""?"":" order by "+OrderFilds;
+            v_sql += " ) tb where tb.rownumber >" + (PageIndex - 1) * PageSize + " and tb.rownumber <= " + PageIndex * PageSize;
+            return v_sql;
+        }
          public override bool Insert<T>(T tclass){
             string v_sql=GetInsertSql<T>(tclass);
             int ret=OraDB.ExecuteSql(v_sql);

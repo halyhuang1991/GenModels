@@ -32,7 +32,7 @@ namespace GenModels.DBUtility.ORM
                 return _new;
             }
         }
-       
+        
         public bool HasAttibute(PropertyInfo p,string attibute){
             Attribute[] ab=Attribute.GetCustomAttributes(p);
             if(ab.Length>0){
@@ -40,6 +40,39 @@ namespace GenModels.DBUtility.ORM
             }else{
                 return false;
             }
+        }
+        public virtual string GetPageSql(string OrderFilds, string tbFields, int PageIndex, int PageSize, string strWhere, string tbName)
+        {
+            string v_sql = "select * from (select  row_number() ";
+            v_sql+=OrderFilds==""?"":("over(order by " + OrderFilds + ") ")+" rowId," + tbFields;
+            if (tbName.ToLower().Contains("select"))
+            {
+                v_sql += " from (" + tbName + ")";
+            }
+            else
+            {
+                v_sql += " from " + tbName;
+
+            }
+
+            if (strWhere.Trim() != "")
+            {
+                v_sql += " where " + strWhere;
+            }
+            v_sql += " ) tb where tb.rowId >" + (PageIndex - 1) * PageSize + " and tb.rowId <= " + PageIndex * PageSize;
+            return v_sql;
+        }
+        public virtual string GetPageSql<T>(T tclass, string strWhere,string OrderFilds,int PageIndex=1, int PageSize=13)where T: class{
+                var t=tclass.GetType();
+                string tbName=t.Name;string tbFields="";
+                t.GetProperties().ToList().ForEach(x=>{
+                    if(tbFields==""){
+                        tbFields+=x.Name;
+                    }else{
+                        tbFields+=","+x.Name;
+                    }
+                });
+                return GetPageSql("",tbFields,  PageIndex, PageSize, strWhere, tbName);
         }
         public virtual string GetInsertSql<T>(T tclass)where T: class{
             Type t=tclass.GetType();
