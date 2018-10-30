@@ -59,6 +59,7 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
                 string IsKey = dr["iskey"].ToString();
                 ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
                 if(IsKey=="1") ret2.AppendLine("    [Key]");
+                ret2.AppendLine("   "+GetDs(dr));
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
                 ret2.AppendLine("   get { return _" + column_name.ToLower() + "; }");
@@ -70,6 +71,16 @@ LEFT JOIN dbo.syscomments comm ON c.cdefault = comm.id
             ret.AppendLine("}");
             return ret.ToString();
      }
+      private static string GetDs(DataRow dr){
+          string DATATYPE=dr["DATA_TYPE"].ToString();
+          string Comments=dr["Comments"].ToString();string Datalength=dr["Data_length"].ToString();
+          string Data_precision=dr["Data_precision"].ToString();string Data_Scale=dr["Data_Scale"].ToString();
+          string Nullable=dr["Nullable"].ToString();
+          string ret="";
+          ret="[Des("+DATATYPE+","+Comments+","+Datalength+","+Data_precision+","+Data_Scale+","+Nullable+")]";
+          return ret;
+
+      }
      private static string GetType(string DATA_TYPE){
             string ret;
             switch (DATA_TYPE.ToUpper())
