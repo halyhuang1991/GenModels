@@ -4,6 +4,7 @@ using GenModels.DBUtility;
 using System.IO;
 using System.Collections.Generic;
 using GenModels.DBUtility.ORM;
+using System.Data.Common;
 
 namespace GenModels
 {
@@ -11,6 +12,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
+            
             Console.WriteLine("Hello World!");
         }
         private static void WriteModel(){

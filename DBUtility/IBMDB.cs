@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using IBM.Data.DB2.Core;
+using IBM.EntityFrameworkCore;
 namespace GenModels.DBUtility
 {
   

@@ -18,5 +18,6 @@
     <PackageReference Include="IBM.Data.DB2" Version="10.0.5.5"/>
     <PackageReference Include="IBM.Data.DB2.Core" Version="1.2.2.100"/>
     <PackageReference Include="IBM.Data.DB2.iSeries" Version="7.1.0"/>
+    <PackageReference Include="IBM.EntityFrameworkCore" Version="1.2.2.100"/>
   </ItemGroup>
 </Project>

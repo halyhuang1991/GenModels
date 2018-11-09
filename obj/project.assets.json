@@ -78,6 +78,19 @@
           "lib/IBM.Data.DB2.iSeries.dll": {}
         }
       },
+      "IBM.EntityFrameworkCore/1.2.2.100": {
+        "type": "package",
+        "dependencies": {
+          "IBM.Data.DB2.Core": "1.2.2.100",
+          "Microsoft.EntityFrameworkCore.Design": "2.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/IBM.EntityFrameworkCore.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/IBM.EntityFrameworkCore.dll": {}
+        }
+      },
       "Microsoft.CSharp/4.4.0": {
         "type": "package",
         "compile": {
@@ -2853,6 +2866,16 @@
         "ibm.data.db2.iseries.7.1.0.nupkg.sha512",
         "ibm.data.db2.iseries.nuspec",
         "lib/IBM.Data.DB2.iSeries.dll"
+      ]
+    },
+    "IBM.EntityFrameworkCore/1.2.2.100": {
+      "sha512": "ARcGSjBbFFWOI+z0g6LQpOs7+KMK8BJOqcrTvcWHz3R7VEH64AfBeOE+d8zQ3UYzYJvKgJSvSjyWNUASjNu9jQ==",
+      "type": "package",
+      "path": "ibm.entityframeworkcore/1.2.2.100",
+      "files": [
+        "ibm.entityframeworkcore.1.2.2.100.nupkg.sha512",
+        "ibm.entityframeworkcore.nuspec",
+        "lib/netstandard2.0/IBM.EntityFrameworkCore.dll"
       ]
     },
     "Microsoft.CSharp/4.4.0": {
@@ -8453,6 +8476,7 @@
       "IBM.Data.DB2 >= 10.0.5.5",
       "IBM.Data.DB2.Core >= 1.2.2.100",
       "IBM.Data.DB2.iSeries >= 7.1.0",
+      "IBM.EntityFrameworkCore >= 1.2.2.100",
       "Microsoft.EntityFrameworkCore >= 2.0.0",
       "Microsoft.EntityFrameworkCore.Design >= 2.0.0",
       "Microsoft.EntityFrameworkCore.Relational >= 2.0.0",
@@ -8474,11 +8498,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\C\\github\\GenModels\\GenModels.csproj",
+      "projectUniqueName": "d:\\C\\github\\GenModels\\GenModels.csproj",
       "projectName": "GenModels",
-      "projectPath": "D:\\C\\github\\GenModels\\GenModels.csproj",
+      "projectPath": "d:\\C\\github\\GenModels\\GenModels.csproj",
       "packagesPath": "C:\\Users\\halyhuang\\.nuget\\packages\\",
-      "outputPath": "D:\\C\\github\\GenModels\\obj\\",
+      "outputPath": "d:\\C\\github\\GenModels\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -8517,6 +8541,10 @@
           "IBM.Data.DB2.iSeries": {
             "target": "Package",
             "version": "[7.1.0, )"
+          },
+          "IBM.EntityFrameworkCore": {
+            "target": "Package",
+            "version": "[1.2.2.100, )"
           },
           "Microsoft.EntityFrameworkCore": {
             "target": "Package",
