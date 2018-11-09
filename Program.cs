@@ -12,7 +12,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
-            DataSet ds=IBMDB.Query("select * from cafcrna");
+            
             Console.WriteLine("Hello World!");
         }
         private static void WriteModel(){
