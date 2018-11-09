@@ -12,7 +12,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
-            
+           
             Console.WriteLine("Hello World!");
         }
         private static void WriteModel(){
