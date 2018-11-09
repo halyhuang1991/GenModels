@@ -8498,11 +8498,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\C\\github\\GenModels\\GenModels.csproj",
+      "projectUniqueName": "D:\\C\\github\\GenModels\\GenModels.csproj",
       "projectName": "GenModels",
-      "projectPath": "d:\\C\\github\\GenModels\\GenModels.csproj",
+      "projectPath": "D:\\C\\github\\GenModels\\GenModels.csproj",
       "packagesPath": "C:\\Users\\halyhuang\\.nuget\\packages\\",
-      "outputPath": "d:\\C\\github\\GenModels\\obj\\",
+      "outputPath": "D:\\C\\github\\GenModels\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "43ff1b91042c3c84dad737e36feb07f5958c2615"
+    "signature": "3faa26a0282008fb7712493e6d71b5c56f49f7ec"
   },
   "compilationOptions": {},
   "targets": {
@@ -11,6 +11,7 @@
           "IBM.Data.DB2": "10.0.5.5",
           "IBM.Data.DB2.Core": "1.2.2.100",
           "IBM.Data.DB2.iSeries": "7.1.0",
+          "IBM.EntityFrameworkCore": "1.2.2.100",
           "Microsoft.EntityFrameworkCore": "2.0.0",
           "Microsoft.EntityFrameworkCore.Design": "2.0.0",
           "Microsoft.EntityFrameworkCore.Relational": "2.0.0",
@@ -76,6 +77,15 @@
       "IBM.Data.DB2.iSeries/7.1.0": {
         "runtime": {
           "lib/IBM.Data.DB2.iSeries.dll": {}
+        }
+      },
+      "IBM.EntityFrameworkCore/1.2.2.100": {
+        "dependencies": {
+          "IBM.Data.DB2.Core": "1.2.2.100",
+          "Microsoft.EntityFrameworkCore.Design": "2.0.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/IBM.EntityFrameworkCore.dll": {}
         }
       },
       "Microsoft.CSharp/4.4.0": {},
@@ -1757,6 +1767,13 @@
       "sha512": "sha512-IDQVQjuh3Q61gi/YtyM/LnR0oL0tQPSYT9HbjdICMbRK9OKQCNQWxRRDq7mKVACwvnbh5VnU7WmmrSSnZrDpTQ==",
       "path": "ibm.data.db2.iseries/7.1.0",
       "hashPath": "ibm.data.db2.iseries.7.1.0.nupkg.sha512"
+    },
+    "IBM.EntityFrameworkCore/1.2.2.100": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ARcGSjBbFFWOI+z0g6LQpOs7+KMK8BJOqcrTvcWHz3R7VEH64AfBeOE+d8zQ3UYzYJvKgJSvSjyWNUASjNu9jQ==",
+      "path": "ibm.entityframeworkcore/1.2.2.100",
+      "hashPath": "ibm.entityframeworkcore.1.2.2.100.nupkg.sha512"
     },
     "Microsoft.CSharp/4.4.0": {
       "type": "package",
