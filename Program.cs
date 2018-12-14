@@ -5,6 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using GenModels.DBUtility.ORM;
 using System.Data.Common;
+using GenModels.mssql.Test;
 
 namespace GenModels
 {
@@ -12,7 +13,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
-           
+            TestPro1.run2();
             Console.WriteLine("Hello World!");
         }
         private static void WriteModel(){

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using Oracle.ManagedDataAccess.Client;
+using Oracle.ManagedDataAccess.EntityFramework;
 using System.Collections;
 namespace GenModels.DBUtility
 {
@@ -20,7 +21,7 @@ namespace GenModels.DBUtility
      }
     public class OraDB:DbClass
     {
-        private static string connectionString = ConfigurationManager.AppSettings["ConnectionString"];
+        private static string connectionString = JsonConfig.GetOraConStr();//ConfigurationManager.AppSettings["ConnectionString"];
        
         public static object GetSingle(string SQLString)
         {

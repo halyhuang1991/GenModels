@@ -740,7 +740,7 @@
           "lib/net40/Oracle.ManagedDataAccess.dll": {}
         }
       },
-      "Oracle.ManagedDataAccess.Core/2.18.3": {
+      "Oracle.ManagedDataAccess.Core/2.12.0-beta2": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/Oracle.ManagedDataAccess.dll": {}
@@ -3548,10 +3548,11 @@
       ]
     },
     "Microsoft.NETCore.Platforms/2.0.0": {
-      "sha512": "VdLJOCXhZaEMY7Hm2GKiULmn7IEPFE4XC5LPSfBVCUIA8YLZVh846gtfBJalsPQF2PlzdD7ecX7DZEulJ402ZQ==",
+      "sha512": "5BdAWDgMNwf90L0J+C/eh6kfHDa37ViL1cBL1nv5zPA4TB2cGV51YiQyvzCEy9DBE0LwwMI4+PkUpIekKyocSA==",
       "type": "package",
       "path": "microsoft.netcore.platforms/2.0.0",
       "files": [
+        ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/netstandard1.0/_._",
@@ -3890,15 +3891,16 @@
         "readme.txt"
       ]
     },
-    "Oracle.ManagedDataAccess.Core/2.18.3": {
-      "sha512": "YWpsNnGbLt5CjpfHzt9RUZbp8CPC5AOkeATSY10WICit9TYtkt3cLBP1i7o1b1jHJen6JWwYrxGRG0BTeN9D/Q==",
+    "Oracle.ManagedDataAccess.Core/2.12.0-beta2": {
+      "sha512": "EXzfn/pV6wDgmHH5bZY+SXEXcqWnn19oBl3U2pVw2jQ0nUFcxytSAPoA1MYR5EZBEdG7jC0DW5+tAQtopxyWWA==",
       "type": "package",
-      "path": "oracle.manageddataaccess.core/2.18.3",
+      "path": "oracle.manageddataaccess.core/2.12.0-beta2",
       "files": [
         ".signature.p7s",
+        "ODP.NET-Core-12.2-Beta2-Documentation.pdf",
         "info.txt",
         "lib/netstandard2.0/Oracle.ManagedDataAccess.dll",
-        "oracle.manageddataaccess.core.2.18.3.nupkg.sha512",
+        "oracle.manageddataaccess.core.2.12.0-beta2.nupkg.sha512",
         "oracle.manageddataaccess.core.nuspec",
         "readme.txt"
       ]
@@ -8540,7 +8542,7 @@
       "Microsoft.EntityFrameworkCore.Tools.DotNet >= 2.0.0",
       "Microsoft.NETCore.App >= 2.0.0",
       "MySql.Data.EntityFrameworkCore >= 8.0.9-dmr",
-      "Oracle.ManagedDataAccess.Core >= 2.18.3",
+      "Oracle.ManagedDataAccess.Core >= 2.12.0-beta2",
       "Oracle.ManagedDataAccess.EntityFramework >= 18.3.0",
       "System.Configuration.ConfigurationManager >= 4.5.0",
       "System.Data.SqlClient >= 4.5.1",
@@ -8637,7 +8639,7 @@
           },
           "Oracle.ManagedDataAccess.Core": {
             "target": "Package",
-            "version": "[2.18.3, )"
+            "version": "[2.12.0-beta2, )"
           },
           "Oracle.ManagedDataAccess.EntityFramework": {
             "target": "Package",
