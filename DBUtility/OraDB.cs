@@ -212,6 +212,7 @@ namespace GenModels.DBUtility
                     command.Parameters.Add(p);
                 }
                 OracleDataAdapter sqlDA = new OracleDataAdapter();
+                sqlDA.SelectCommand=command;
                 sqlDA.Fill(dataSet);
                 for (int i = 0; i < dataSet.Tables.Count; i++)
                 {

@@ -199,9 +199,11 @@ namespace GenModels.DBUtility
                     command.Parameters.Add(p);
                 }
                 SqlDataAdapter sqlDA = new SqlDataAdapter();
+                sqlDA.SelectCommand=command;
                 sqlDA.Fill(dataSet);
                 for (int i = 0; i < dataSet.Tables.Count; i++)
                 {
+                    if(tableNames.Length-1>=i)
                     dataSet.Tables[i].TableName = tableNames[i];
                 }
                 connection.Close();
