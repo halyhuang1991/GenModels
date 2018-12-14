@@ -1,0 +1,49 @@
+Create type dbo.tmp01 as Table
+(
+[name] [Nvarchar(50)] NOT NULL
+)
+GO
+
+======================================
+USE [test]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertMultiRows]    Script Date: 2018/12/14 11:32:29 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER Procedure [dbo].[InsertMultiRows]
+(@ManyRows [dbo].[tmp01] READONLY)
+as
+begin
+ declare @a int,@error int    
+ declare @temp varchar(50)
+  set @a=1
+  set @error=0
+declare order_cursor cursor for SELECT name from @ManyRows
+ open order_cursor
+    --开始循环游标变量--
+    fetch next from order_cursor into @temp
+    while @@FETCH_STATUS = 0    --返回被 FETCH语句执行的最后游标的状态--
+        begin            
+            update score set name=@temp where id=@a
+            set @a=@a+1
+            set @error= @error + @@ERROR   --记录每次运行sql后是否正确，0正确
+            fetch next from order_cursor into @temp   --转到下一个游标，没有会死循环
+        end   
+    close order_cursor  --关闭游标
+    deallocate order_cursor   --释放游标
+end
+ 
+===================================
+
+DECLARE @tmpRows as [dbo].[tmp01]
+ 
+----插入多个数据到参数表中
+INSERT @tmpRows(name) values('a')
+INSERT @tmpRows(name) values('a')
+INSERT @tmpRows(name) values('b')
+ 
+----传递参数到存储过程，完成一次多行集插入
+EXEC dbo.InsertMultiRows @tmpRows
