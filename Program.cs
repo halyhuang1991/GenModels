@@ -13,7 +13,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
-            mysql.Test.MyProTest.run1();
+            //mysql.Test.MyProTest.run1();
             Console.WriteLine("Hello World!");
         }
         private static void WriteModel(){

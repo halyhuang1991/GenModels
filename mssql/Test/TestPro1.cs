@@ -32,12 +32,12 @@ namespace GenModels.mssql.Test
             cmdParms[0].Value=dataTable;
             
             List<SqlParameter> lsPara=MsDB.ExecuteSql("[dbo].[InsertMultiRows]",CommandType.StoredProcedure,cmdParms);
-            string output="";
+            //string output="";
         }
         public static void run3(){
             SqlParameter[] cmdParms=new SqlParameter[0];
             DataSet dataSet=MsDB.RunProcedure("dbo.Getds",cmdParms,new string[]{});
-            string output="";
+            //string output="";
         }
     }
 }
