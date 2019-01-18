@@ -222,6 +222,50 @@ namespace GenModels.DBUtility
                 return dataSet;
             }
         }
-
+        /// 数组批量提交，实现数据库事务。
+        /// </summary>
+        /// <param name="SQLStringList">SQL语句的表（key为sql语句，value是该语句的OracleParameter[] 每个值都是一个数组）</param>
+        public static void ExecuteTran(SortedList<string, OracleParameter[]> SQLStringList)
+        {
+            ExecuteTran(SQLStringList, false);
+        }
+        public static void ExecuteTran(SortedList<string, OracleParameter[]> SQLStringList, bool IsStored)
+        {
+            using (OracleConnection conn = new OracleConnection(connectionString))
+            {
+                conn.Open();
+                using (OracleTransaction trans = conn.BeginTransaction())
+                {
+                    OracleCommand cmd = new OracleCommand();
+                    try
+                    {
+                        //循环
+                        foreach (KeyValuePair<string, OracleParameter[]> myDE in SQLStringList)
+                        {
+                            string cmdText = myDE.Key.ToString();
+                            OracleParameter[] cmdParms = (OracleParameter[])myDE.Value;
+                            cmd.ArrayBindCount = ((object[])(cmdParms[0].Value)).Length;
+                            cmd.BindByName = true;
+                            if (IsStored)
+                            {
+                                PrepareCommand(cmd, conn, trans, CommandType.StoredProcedure, cmdText, cmdParms);
+                            }
+                            else
+                            {
+                                PrepareCommand(cmd, conn, trans, cmdText, cmdParms);
+                            }
+                            int val = cmd.ExecuteNonQuery();
+                            cmd.Parameters.Clear();
+                        }
+                        trans.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+        }
     }
 }
