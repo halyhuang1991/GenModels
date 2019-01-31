@@ -20,5 +20,6 @@
     <PackageReference Include="IBM.Data.DB2.iSeries" Version="7.1.0"/>
     <PackageReference Include="IBM.EntityFrameworkCore" Version="1.2.2.100"/>
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="4.5.0"/>
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2"/>
   </ItemGroup>
 </Project>

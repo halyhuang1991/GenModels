@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using GenModels.DBUtility.ORM;
 using System.Data.Common;
 using GenModels.mssql.Test;
+using Models;
 
 namespace GenModels
 {
@@ -13,7 +14,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
-            //mysql.Test.MyProTest.run1();
+            Sqlite.Test.TestSqlitecs.query2();
             Console.WriteLine("Hello World!");
         }
         private static void WriteModel(){
