@@ -14,6 +14,7 @@ namespace GenModels
     {
         static void Main(string[] args)
         {
+            //Sqlite.Test.TestSqlitecs.run2();
             Sqlite.Test.TestSqlitecs.query2();
             Console.WriteLine("Hello World!");
         }

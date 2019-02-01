@@ -31,11 +31,12 @@ namespace GenModels.Sqlite.Test
             string line;
             while ((line = sr.ReadLine()) != null) 
             {
-                if (line.ToString() != "")
+                if (line.ToString().Trim() != "")
                 {
                     UNPROMISE model = new UNPROMISE();
-                    model.NAME=line.ToString();
-                    model.REMARK="Broken faith enterprise";
+                    model.NAME=line.ToString().Trim();
+                    //model.REMARK="Broken faith enterprise";
+                    model.REMARK="Broken faith hospital";
                     ls.Add(model);
                 }
             }
