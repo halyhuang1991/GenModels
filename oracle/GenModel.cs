@@ -7,9 +7,16 @@ namespace GenModels.oracle
     public class GenModel
     {
         private static string sql=@"select a.Table_Name,s.COMMENTS Table_COMMENT,a.column_name,b.comments,a.DATA_TYPE,a.data_length,a.data_precision,a.Data_Scale,A.nullable  
+,nvl2(s1.column_name,1,0) iskey
 from  user_tab_columns a inner join user_col_comments b on   a.Table_Name = b.Table_Name
     and a.Column_Name = b.Column_Name
-    left join all_tab_comments s on a.Table_Name = s.Table_Name";
+    left join all_tab_comments s on a.Table_Name = s.Table_Name
+       left join (select  col.*
+from user_constraints con,user_cons_columns col
+where
+con.constraint_name=col.constraint_name and con.constraint_type='P') s1 on   a.Table_Name = s1.Table_Name
+    and a.Column_Name = s1.Column_Name order by a.Table_Name
+    ";
     private static string t_sql=@"select distinct a.Table_Name,s.COMMENTS Table_COMMENT from  user_tab_columns a inner join all_tab_comments s 
      on a.Table_Name = s.Table_Name";
      public static string GenOneModel(string tablename){
@@ -28,6 +35,8 @@ from  user_tab_columns a inner join user_col_comments b on   a.Table_Name = b.Ta
                 string column_name = dr["column_name"].ToString().Trim();
                 string DATA_TYPE = dr["DATA_TYPE"].ToString();
                 ret1.AppendLine("   private " + GetType(DATA_TYPE) + " _" + column_name.ToLower()+";");
+                string IsKey = dr["iskey"].ToString();
+                if(IsKey=="1") ret2.AppendLine("    [Key]");
                 ret2.AppendLine("   public " + GetType(DATA_TYPE) + " " + column_name.ToUpper() + "{");
                 ret2.AppendLine("   set { _" + column_name.ToLower() + " = value; }");
                 ret2.AppendLine("   get { return _" + column_name.ToLower() + "; }");
